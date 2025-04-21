@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%"
+viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+<defs>
+    <radialGradient cx="45%" cy="45%" fx="30%" fy="30%" id="gradient-earth"
+        r="50%">
+        <stop offset="10%" stop-color="#d6aa74" />
+        <stop offset="55%" stop-color="#A97E39" />
+        <stop offset="100%" stop-color="#81572A" />
+    </radialGradient>
+    <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" id="gradient-shadow"
+    r="50%">
+    <stop offset="10%" stop-color="black" stop-opacity="1" />
+    <stop offset="100%" stop-color="black" stop-opacity="0" />
+</radialGradient>
+</defs>
+<ellipse rx="42" ry="10" cx="50" cy="90"
+    style="fill:url(#gradient-shadow)" />
+<circle id="orb-earth" cx="50" cy="50" style="fill:url(#gradient-earth)"
+    r="41" />
+</svg>

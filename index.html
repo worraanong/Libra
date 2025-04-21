@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libra</title>
+    <link rel="stylesheet" href="./main.css">
+</head>
+
+<body onclick="startBgm()">
+    <div class="main">
+        <div class="header-bar">
+            <div class="title"></div>
+            <button id="menu" class="btn-square" onclick="next(this)">&#8801;</button>
+            <div class="stats">
+                <div>Money: <input id="money" type="number" value="0" disabled></div>
+                <div>Experiment No. <input id="experiment" type="number" value="0" disabled></div>
+                <div>Total Mana need: <input id="mana" type="number" value="0" disabled></div>
+            </div>
+        </div>
+        <div class="line-decor">
+            <div class="semi-circle semi-circle-down"></div>
+        </div>
+        <div id="workshop">
+
+        </div>
+        <div class="footer-bar">
+            <button id="offer" class="btn-glitter" onclick="makeOfferingToGoddess(this)">Offer</button>
+        </div>
+    </div>
+    <div style="display: none;">
+        <button id="next" onclick="next(this)">Next</button>
+        <button onclick="toShop()">Shop</button>
+        <button onclick="toTitle()">Back</button>
+        <button>⚙</button>
+
+    </div>
+
+    <script src="./js/util.js"></script>
+    <script src="./js/orb.js"></script>
+    <script src="./js/navigator.js"></script>
+    <script src="./js/init.js"></script>
+    <script src="./js/html-element.js"></script>
+    <script src="./js/sound-effect.js"></script>
+
+    <script>
+        let materialsCollection = "";
+        let salvers = [];
+
+        //const base2 = "A-3 B,A=B,A-2 A-2"; //0,0,0,0 1/2A+1/2B    2,4,4,0  A+2B   3,0,0,4 3/2A+1/2B 
+        //vice & virtue void this is not libra it vibra!.. vibe with her libraa ration
+        //phse 2 I accidentally multiply x
+        // 3 add void
+
+        // Menu
+
+        function openMenu() {
+            console.log("open");
+        }
+
+
+
+        //
+
+        startExperiment(0);
+
+        function startExperiment(i) {
+            materialsCollection = combinations[i].split('=');
+            cleanAtelier();
+            prepareAtelier();
+            attachFunctionToManaFoldInput();
+        }
+
+        function calculateTotalMana() {
+            const prefix = "mana-fold-";
+            const inputs = document.querySelectorAll(`[id^=${prefix}]`);
+            let inputValues = [];
+            inputs.forEach(x => inputValues.push(defaultIfInvalidNumber(x.valueAsNumber, 1, maxManaFold) - 1));
+            const sum = inputValues.reduce((acc, x) => acc + x, 0);
+            updateTotalMana(sum);
+        }
+
+        function makeOfferingToGoddess(el) {
+            audioMagic.play();
+
+            emptyAllSalvers();
+            breakDownMaterials();
+            if (calculateEquilibrium()) {
+                el.textContent = 'Success';
+                el.disabled = true;
+                goddessPleased();
+            }
+            else {
+                el.textContent = 'Fail!';
+
+                goddessDissatisfied()
+            }
+        }
+
+        function next(el) {
+            nextExperiment();
+            startExperiment(experimentElement.valueAsNumber);
+            if (experimentElement.valueAsNumber >= combinations.length - 1) {
+                el.disabled = true;
+            }
+            offerButton.disabled = false;
+            offerButton.textContent = 'Offer';
+        }
+
+        function goddessPleased() {
+            audioSuccess.play();
+            updateMoney(200);
+        }
+        function goddessDissatisfied() {
+            audioFail.play();
+            updateMoney(-100);
+            // lost money for material that loss
+            // show try again
+            // show try next
+        }
+
+        function updateMoney(value) {
+            moneyElement.value = moneyElement.valueAsNumber + value;
+        }
+        function nextExperiment() {
+            experimentElement.value = experimentElement.valueAsNumber + 1;
+        }
+        function updateTotalMana(value) {
+            manaElement.value = value;
+        }
+
+        function breakDownMaterials() {
+            for (const [i, materials] of materialsCollection.entries()) {
+                const salver = new Map();
+                const material = materials.split(' ');
+
+                for (const [j, compound] of material.entries()) {
+                    const extracts = compound.split(',');
+                    const level = getInt(`mana-fold-${i}-${j}`);
+
+                    for (let extract of extracts) {
+                        const refinedExtract = determinePrimitiveManaOfTheEssence(extract);
+                        const amplifiedExtract = amplifyManaLevel(refinedExtract, level);
+                        putOnSalver(salver, amplifiedExtract);
+                    }
+                }
+                salvers.push(salver);
+            }
+        }
+
+        function cleanAtelier() {
+            workshopElement.textContent = '';
+        }
+
+        function calculateEquilibrium() {
+            let equal = false;
+            for (let i = 0; i < salvers.length; i++) {
+                const thisSalver = salvers[i];
+                const anotherSalver = salvers[i + 1];
+                if (anotherSalver) {
+                    equal = assessEquivalenceOfEachEssence(thisSalver, anotherSalver)
+                    if (!equal) break;
+                }
+            }
+            return equal;
+        }
+
+        function amplifyManaLevel(extract, level) {
+            [essence, mana] = extract;
+            mana = mana * level;
+            return [essence, mana];
+        }
+
+        function putOnSalver(salver, extract) {
+            [essence, mana] = extract;
+            let before = 0;
+            if (salver.has(essence)) {
+                before = salver.get(essence);
+            }
+            salver.set(essence, before + mana);
+            return salver;
+        }
+
+        function emptyAllSalvers() {
+            salvers = [];
+        }
+
+        function assessEquivalenceOfEachEssence(thisOne, another) {
+            return thisOne.size === another.size &&
+                Array.from(thisOne.keys()).every((essence) => thisOne.get(essence) === another.get(essence));
+        }
+
+        function attachFunctionToManaFoldInput() {
+            const prefix = "mana-fold-";
+            const inputs = document.querySelectorAll(`[id^=${prefix}]`);
+            inputs.forEach(el => el.onchange = function () {
+                playSound(audioDing);
+                addDimEffect(el);
+                calculateTotalMana();
+            });
+            inputs.forEach(el => el.onblur = function () {
+                el.value = defaultIfInvalidNumber(el.valueAsNumber, min = 1, max = maxManaFold);
+
+            });
+        }
+
+        function addDimEffect(el) {
+            if (el.valueAsNumber === 1) {
+                el.classList.add("dim");
+            }
+            else el.classList.remove("dim");
+        }
+        attachFunctionToManaFoldInput()
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+:root {
+  --gold: rgb(255, 196, 0);
+}
+
+body {
+  font-family: "Playwrite";
+  font-size: 24px;
+  user-select: none;
+  background-image: url("./texture.png");
+  margin: 0;
+}
+@font-face {
+  font-family: "Playwrite";
+  src: url("Playwrite.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Transcity";
+  src: url("Transcity DEMO.otf") format("opentype");
+}
+
+button {
+  padding: 10px 0 20px 0;
+  margin: 4px;
+  font-family: "Playwrite";
+  font-size: 36px;
+  font-weight: 800;
+  border: 12px double transparent;
+  border-radius: 20px;
+  border-color: var(--gold);
+  background: linear-gradient(to right, #240d5c, darkorchid) padding-box,
+    linear-gradient(to right, #240d5c, darkorchid) border-box;
+  color: var(--gold);
+  cursor: pointer;
+  text-shadow: 2px 2px 5px rgb(29, 29, 29);
+  position: relative;
+  z-index: 10;
+}
+button:hover{
+box-shadow: 0px 0px 20px rgba(255, 217, 0, 0.6);
+}
+
+input:focus{
+  box-shadow: 0px 0px 20px rgba(255, 217, 0, 0.6);
+  }
+
+.btn-square {
+  height: 80px;
+  width: 80px;
+  line-height: 0px;
+  font-size: 56px;
+  float: right;
+  margin: 20px;
+}
+.btn-glitter {
+  transition: all 0.2s;
+  width: 300px;
+}
+.btn-glitter::after {
+  content: "*";
+  position: relative;
+  top: 10px;
+  right: -16px;
+  opacity: 0;
+  transition: 1s;
+}
+
+.btn-glitter::before {
+  content: "*";
+  position: relative;
+  top: -5px;
+  right: 6px;
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.btn-glitter:active::before,
+.btn-glitter:active::after {
+  opacity: 1;
+  transition: 0.4s;
+}
+.extract input {
+  text-align: center;
+  font-family: "Playwrite";
+  font-size: 36px;
+  font-weight: bold;
+  padding: 0 6px 0 10px;
+  margin: 0 10px 0 0;
+  border-radius: 20px;
+  border: double gold 12px;
+  background-color: #fcfcfc;
+}
+
+.extract input[type="number"]::-webkit-inner-spin-button,
+.extract input[type="number"]::-webkit-outer-spin-button {
+  /* -webkit-appearance: none; */
+  opacity: 1;
+}
+.extract {
+  display: flex;
+  align-items: center;
+}
+.materials {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+.compound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px 0;
+}
+.orbs {
+  align-self: center;
+  min-width: max-content;
+}
+.large span {
+  font-size: 48px;
+}
+.unstable {
+  animation: unstable 5s;
+  animation-iteration-count: infinite;
+  width: 20%;
+  margin: 0 auto;
+}
+.unstable span {
+  transform: scale(2, 1);
+}
+
+@keyframes unstable {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  70% {
+    transform: rotate(6deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.header-bar {
+  background-color: #240d5c;
+  width: 100%;
+  color: white;
+  padding: 10px 0;
+}
+.header-bar div {
+  padding: 0 20px;
+}
+
+#workshop {
+  width: 100%;
+  flex-grow: 1;
+  align-content: center;
+  /* overflow: scroll; */
+  /* background-color: rgb(205, 198, 188); */
+  background-image: linear-gradient(rgba(205, 198, 188,.9),95%, rgba(255,0,0,0));
+}
+.footer-bar{
+  padding-bottom: 3%;
+}
+
+.title{
+  font-family: 'Transcity';
+  font-size: 120px;
+  opacity: .2;
+  float: left;
+  height: 100px;
+}
+.title::after{
+  content: "Libra";
+}
+
+/* Mobile screen: Portrait */
+@media (max-width: 640px) {
+  .extract {
+    flex-direction: column;
+  }
+  .extract span{
+    font-size: 20px;
+  }
+  .header-bar{
+    position: relative;
+  }
+  .header-bar .stats{
+    position: absolute;
+    top: 10px;
+    padding: 0;
+  }
+  #workshop{
+    overflow: scroll;
+  }
+}
+
+
+.line-decor {
+  width: 100%;
+}
+.semi-circle {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  background: radial-gradient(16px, transparent, transparent 4px, rgb(36 13 92) 4px, rgb(36 13 92) 10px, transparent 11px);
+  background-size: 20px 40px;
+}
+
+.semi-circle-down {
+  background-position: 20px -20px;
+}
+
+.dim{
+  color: #c0c0c0;
+}

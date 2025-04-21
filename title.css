@@ -1,0 +1,14 @@
+@font-face {
+  font-family: "Transcity";
+  src: url("Transcity DEMO.otf") format("opentype");
+}
+.banner {
+  font-family: "Transcity";
+  font-size: 200px;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

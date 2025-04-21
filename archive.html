@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive</title>
+</head>
+
+<body>
+    <section>
+        <h1>Sound</h1>
+        <button onclick="playSound(audioMagic)">Magic wand</button>
+        <button onclick="playSound(audioDing)">Ding</button>
+        <button onclick="playSound(audioSuccess)">Success</button>
+        <button onclick="playSound(audioFail)">Fail</button>
+    </section>
+    <section>
+        <h1>Orbs</h1>
+        <div id="orbs-archive"></div>
+    </section>
+    <script src="./js/util.js"></script>
+    <script src="./js/orb.js"></script>
+    <script src="./js/html-element.js"></script>
+    <script src="./js/sound-effect.js"></script>
+    <script>
+        const orbs = document.getElementById("orbs-archive");
+        for (const property in Element) {
+            orbs.appendChild(newOrb(Element[property], 5));
+        }
+    </script>
+</body>
+
+</html>
