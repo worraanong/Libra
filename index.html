@@ -5,36 +5,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libra</title>
-    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/button-input.css">
+    <link rel="stylesheet" href="./css/popup.css">
 </head>
 
 <body onclick="startBgm()">
     <div class="main">
         <div class="header-bar">
             <div class="title"></div>
-            <button id="menu" class="btn-square" onclick="next(this)">&#8801;</button>
+            <button id="menu" class="btn-square btn-menu" onclick="pop(menuPopUp)">&#8801;</button>
             <div class="stats">
-                <div>Money: <input id="money" type="number" value="0" disabled></div>
-                <div>Experiment No. <input id="experiment" type="number" value="0" disabled></div>
-                <div>Total Mana need: <input id="mana" type="number" value="0" disabled></div>
+                <div>
+                    <div class="stat-title">Money: </div>
+                    <div class="stat-value">
+                        <span id="money-text">0</span>
+                    </div>
+                    <input id="money" type="number" value="0" disabled style="display: none;">
+                </div>
+                <div>
+                    <div class="stat-title">Experiment No. </div>
+                    <div class="stat-value">
+                        <span id="experiment-text">1</span>
+                    </div>
+                    <input id="experiment" type="number" value="0" disabled style="display: none;">
+                </div>
+                <div>
+                    <div class="stat-title">Total Mana need: </div>
+                    <div class="stat-value">
+                        <span id="mana-text">0</span>
+                    </div>
+                    <input id="mana" type="number" value="0" disabled style="display: none;">
+                </div>
             </div>
         </div>
-        <div class="line-decor">
-            <div class="semi-circle semi-circle-down"></div>
-        </div>
-        <div id="workshop">
-
-        </div>
+        <div id="workshop"></div>
         <div class="footer-bar">
-            <button id="offer" class="btn-glitter" onclick="makeOfferingToGoddess(this)">Offer</button>
+            <div class="cut-corner">
+                <button id="offer" class="btn-glitter" onclick="makeOfferingToGoddess(this)">Offer</button>
+            </div>
         </div>
     </div>
     <div style="display: none;">
         <button id="next" onclick="next(this)">Next</button>
         <button onclick="toShop()">Shop</button>
-        <button onclick="toTitle()">Back</button>
+
         <button>⚙</button>
 
+    </div>
+
+    <div id="main-menu" class="layer filter">
+        <div class="popup-content">
+            <button class="btn-square" onclick="hide(menuPopUp)">&times;</button>
+            <h3>Options</h3>
+            <div class="vertical">
+                <div class="cut-corner">
+                <button class="btn" onclick="toTitle()">New Game</button>
+            </div>
+                <button class="btn" id="bgm" onclick="toggleBgm()">Background Music</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="goddess-judgement" class="layer white">
+        <div class="popup-goddess">
+            <!-- <object style="width: 100%;" type="text/html" data="judgement.html"></object> -->
+            <div class="img-goddess">
+                <img src="./image/goddess-no.png" alt="">
+            </div>
+            <div>
+                <button class="btn" onclick="hide(goddessPopUp)">Next</button>
+                <button class="btn" onclick="hide(goddessPopUp)">Retry</button>
+            </div>
+        </div>
     </div>
 
     <script src="./js/util.js"></script>
@@ -43,6 +86,7 @@
     <script src="./js/init.js"></script>
     <script src="./js/html-element.js"></script>
     <script src="./js/sound-effect.js"></script>
+    <script src="./js/popup.js"></script>
 
     <script>
         let materialsCollection = "";
@@ -52,16 +96,6 @@
         //vice & virtue void this is not libra it vibra!.. vibe with her libraa ration
         //phse 2 I accidentally multiply x
         // 3 add void
-
-        // Menu
-
-        function openMenu() {
-            console.log("open");
-        }
-
-
-
-        //
 
         startExperiment(0);
 
@@ -73,12 +107,16 @@
         }
 
         function calculateTotalMana() {
-            const prefix = "mana-fold-";
-            const inputs = document.querySelectorAll(`[id^=${prefix}]`);
+            const inputs = document.querySelectorAll(`[id^=${prefixManaFold}]`);
             let inputValues = [];
             inputs.forEach(x => inputValues.push(defaultIfInvalidNumber(x.valueAsNumber, 1, maxManaFold) - 1));
             const sum = inputValues.reduce((acc, x) => acc + x, 0);
             updateTotalMana(sum);
+        }
+
+
+        function appraiseByGoddess() {
+
         }
 
         function makeOfferingToGoddess(el) {
@@ -86,16 +124,23 @@
 
             emptyAllSalvers();
             breakDownMaterials();
-            if (calculateEquilibrium()) {
-                el.textContent = 'Success';
-                el.disabled = true;
-                goddessPleased();
-            }
-            else {
-                el.textContent = 'Fail!';
+            const meetGoddess = () => pop(goddessPopUp);
+            delay(meetGoddess, 1);
+            const makeDecision = () => {
+                if (calculateEquilibrium()) {
+                    el.textContent = 'Success';
+                    el.disabled = true;
+                    goddessPleased();
+                }
+                else {
+                    el.textContent = 'Fail!';
 
-                goddessDissatisfied()
+                    goddessDissatisfied()
+                }
             }
+
+            delay(makeDecision, 3);
+
         }
 
         function next(el) {
@@ -122,12 +167,15 @@
 
         function updateMoney(value) {
             moneyElement.value = moneyElement.valueAsNumber + value;
+            moneyText.textContent = moneyElement.value;
         }
         function nextExperiment() {
             experimentElement.value = experimentElement.valueAsNumber + 1;
+            experimentText.textContent = experimentElement.value + 1;
         }
         function updateTotalMana(value) {
             manaElement.value = value;
+            manaText.textContent = value;
         }
 
         function breakDownMaterials() {
@@ -137,7 +185,7 @@
 
                 for (const [j, compound] of material.entries()) {
                     const extracts = compound.split(',');
-                    const level = getInt(`mana-fold-${i}-${j}`);
+                    const level = getInt(`${prefixManaFold}${i}-${j}`);
 
                     for (let extract of extracts) {
                         const refinedExtract = determinePrimitiveManaOfTheEssence(extract);
@@ -192,8 +240,7 @@
         }
 
         function attachFunctionToManaFoldInput() {
-            const prefix = "mana-fold-";
-            const inputs = document.querySelectorAll(`[id^=${prefix}]`);
+            const inputs = document.querySelectorAll(`[id^=${prefixManaFold}]`);
             inputs.forEach(el => el.onchange = function () {
                 playSound(audioDing);
                 addDimEffect(el);
@@ -201,8 +248,16 @@
             });
             inputs.forEach(el => el.onblur = function () {
                 el.value = defaultIfInvalidNumber(el.valueAsNumber, min = 1, max = maxManaFold);
-
+                addDimEffect(el);
             });
+
+            inputs.forEach(el => el.onfocus = function () {
+                el.type = 'text';
+                //not support for input type number
+                el.setSelectionRange(0, el.value.length);
+                el.type = 'number';
+            });
+
         }
 
         function addDimEffect(el) {

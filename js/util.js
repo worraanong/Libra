@@ -8,3 +8,7 @@ function getInt(id) {
     const inputValue = document.getElementById(id).valueAsNumber;
     return defaultIfInvalidNumber(inputValue);
 }
+function delay(fn, second = 1){
+    const milliseconds = second * 1000;
+    setTimeout(fn, milliseconds);
+}

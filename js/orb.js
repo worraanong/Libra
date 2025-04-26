@@ -5,10 +5,10 @@ const Element = Object.freeze({
     Fire: 'Fire',
 });
 
-const ORB_FIRE = "./orb-fire.svg";
-const ORB_WATER = "./orb-water.svg";
-const ORB_WIND = "./orb-wind.svg";
-const ORB_EARTH = "./orb-earth.svg";
+const ORB_FIRE =  "./image/orb-fire.svg";
+const ORB_WATER = "./image/orb-water.svg";
+const ORB_WIND =  "./image/orb-wind.svg";
+const ORB_EARTH = "./image/orb-earth.svg";
 
 const getSvg = {
     'Earth': ORB_EARTH,
@@ -17,16 +17,20 @@ const getSvg = {
     'Fire': ORB_FIRE
 }
 
-function newOrb(element, fold) {
+const baseSize = 50;
+const incrementSize = 10;
+
+function createOrb(element, fold) {
     const orb = createBaseElement(fold)
     orb.src = getSvg[element];
     return orb;
 }
 
 function createBaseElement(fold) {
+    return addImg(getSize(fold));
+}
+
+const getSize = (fold) => {
     const multiplier = defaultIfInvalidNumber(fold, 0);
-    const base = document.createElement("img");
-    base.width = 50 + (10 * multiplier);
-    base.src = "";
-    return base;
+    return baseSize + (incrementSize * multiplier);
 }

@@ -1,0 +1,77 @@
+.filter {
+  background-color: var(--black-50);
+}
+
+.popup-content {
+  background-color: var(--ivory);
+  margin: 10% auto;
+  padding: 2px;
+  border: 1px solid #888;
+  width: 420px;
+  border-radius: var(--border-radius);
+}
+
+.popup-content h3 {
+  margin-left: 20px;
+  margin-block-end: 0;
+}
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
+}
+.vertical button {
+  width: 80%;
+}
+.inactive {
+  filter: saturate(0.2);
+}
+
+.layer {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  transition: opacity 3s ;
+  opacity:.1;
+}
+.layer.active {
+  opacity:1;
+}
+
+.white {
+  background-color: var(--ivory);
+}
+
+@keyframes opac {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.fade-in {
+  animation: opac 2s;
+}
+.fade-out {
+  animation: opac 2s;
+  animation-direction: reverse;
+}
+.popup-goddess{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+.img-goddess{
+flex-grow: 1;
+align-content: center;
+}

@@ -12,7 +12,7 @@ function addSpan(text, parent) {
     parent.appendChild(el);
 }
 
-function addNumberInput(id, parent) {
+function addNumberInput(id, parent, placeholder = "") {
     const el = document.createElement("input");
     el.setAttribute("id", id);
     el.setAttribute("type", "number");
@@ -20,8 +20,16 @@ function addNumberInput(id, parent) {
     el.setAttribute("step", "1");
     el.setAttribute("max", maxManaFold);
     el.setAttribute("value", 1);
+    el.placeholder = placeholder; 
     el.classList.add("dim");
 
     parent.appendChild(el);
+    return el;
+}
+
+function addImg(width) {
+    const el = document.createElement("img");
+    el.width = width;
+    el.src = "";
     return el;
 }

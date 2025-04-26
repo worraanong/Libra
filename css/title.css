@@ -1,0 +1,33 @@
+@font-face {
+  font-family: "Transcity";
+  src: url("../font/Transcity DEMO.otf") format("opentype");
+}
+
+.banner {
+  font-family: "Transcity";
+  font-size: 200px;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-image: url(../image/libra-color.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.logo{
+  margin-top: 360px;
+  color: #2c282f;
+  animation: float 5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(30px);
+  }
+}

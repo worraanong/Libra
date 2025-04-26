@@ -1,0 +1,118 @@
+button {
+  padding: 10px 0 20px 0;
+  margin: 4px;
+  font-family: "Playwrite";
+  font-size: 36px;
+  font-weight: 800;
+  border: double transparent;
+  border-width: var(--border-width-double);
+  border-radius: var(--border-radius);
+  border-color: var(--gold);
+  background: linear-gradient(30deg, var(--primary), var(--secondary))
+      padding-box,
+    linear-gradient(30deg, var(--primary), var(--secondary)) border-box;
+  color: var(--gold);
+  cursor: pointer;
+  text-shadow: 2px 2px 5px var(--shadow);
+  position: relative;
+  z-index: 1;
+}
+button:hover,
+input:focus {
+  box-shadow: 0px 0px 20px var(--glow);
+}
+
+.btn-square {
+  height: 80px;
+  width: 80px;
+  line-height: 0px;
+  font-size: 56px;
+  float: right;
+}
+.btn-menu {
+  margin: 20px;
+}
+.btn-glitter {
+  transition: all 0.2s;
+  width: 300px;
+}
+.btn-glitter::after,
+.btn-glitter::before {
+  position: relative;
+  opacity: 0;
+}
+.btn-glitter::after {
+  content: "✶";
+  top: 10px;
+  right: -16px;
+  transition: 1s;
+}
+.btn-glitter::before {
+  /* ★ */
+  content: "✷";
+  top: -5px;
+  right: 6px;
+  transition: 0.2s;
+}
+.btn-glitter:active::before,
+.btn-glitter:active::after {
+  opacity: 1;
+  transition: 0.4s;
+}
+.btn {
+  border: var(--border-width) solid var(--silver);
+  font-size: 28px;
+  color: var(--silver);
+}
+.btn:hover {
+  box-shadow: 0px 0px 10px var(--silver);
+}
+.extract input {
+  text-align: center;
+  font-family: "Playwrite";
+  font-size: 36px;
+  font-weight: bold;
+  padding: 0 6px 0 10px;
+  margin: 0 10px 0 0;
+  border-radius: var(--border-radius);
+  border: double var(--gold);
+  border-width: var(--border-width-double);
+  background-color: var(--ivory);
+}
+.extract input[type="number"]::-webkit-inner-spin-button,
+.extract input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  /* opacity: 1; */
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+::placeholder {
+  color: var(--gray);
+  opacity: 1; /* Firefox */
+}
+
+
+.cut-corner {
+
+  position: relative;
+  --mask:
+    radial-gradient(30px at 100% 0   ,#0000 calc(98% - 2px),#000 calc(100% - 2px) 98%,#0000),
+    radial-gradient(30px at 0    100%,#0000 calc(98% - 2px),#000 calc(100% - 2px) 98%,#0000),
+    conic-gradient(from 90deg at 2px 2px,#0000 25%,#000 0) 0 0/calc(100% - 30px + 2px) calc(100% - 30px + 2px) no-repeat,
+    conic-gradient(at bottom 2px right 2px,#000 75%,#0000 0) 100% 100%/calc(100% - 30px + 2px) calc(100% - 30px + 2px) no-repeat;
+}
+.cut-corner:before {
+  pointer-events: none;
+  z-index: 2;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: gold;
+  -webkit-mask: var(--mask);
+          mask: var(--mask);
+}
+.cut-corner-silver {
+  background-color: var(--silver);
+}
