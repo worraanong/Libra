@@ -2,7 +2,9 @@
   font-family: "Transcity";
   src: url("../font/Transcity DEMO.otf") format("opentype");
 }
-
+body{
+  background-color: #fff;
+}
 .banner {
   font-family: "Transcity";
   font-size: 200px;
