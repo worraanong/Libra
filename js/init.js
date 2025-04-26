@@ -1,25 +1,39 @@
+const hintElement = document.getElementById("hint");
 const moneyElement = document.getElementById("money");
 const moneyText = document.getElementById("money-text");
-const experimentText = document.getElementById("experiment");
-const experimentElement = document.getElementById("experiment-text");
+const experimentElement = document.getElementById("experiment");
+const experimentText = document.getElementById("experiment-text");
 const manaElement = document.getElementById("mana");
 const manaText = document.getElementById("mana-text");
 const workshopElement = document.getElementById("workshop");
 const offerButton = document.getElementById("offer");
 const nextButton = document.getElementById("next");
+const retryButton = document.getElementById("retry");
 
+const tutorialPopUp = document.getElementById("tutorial");
 const menuPopUp = document.getElementById("main-menu");
 const goddessPopUp = document.getElementById("goddess-judgement");
+const goddessText = document.getElementById("goddess-result");
 
 const bgmButton = document.getElementById("bgm");
 
 const combinations = [
-    "A,B-4 C-2=A,C-4 B,C",
-    "A-3 B,A=B,A-2 A-2",
-    "A-4,B-10 C-2,B=C-3,A,B-4",
-    "A B-2,C=A,C,B B-2"
+    "D=D-2", //1
+    "C-3=C", //2
+    "B-2=B-3", //3
+    "C B=B,C", //0
+    "C,D=C D-2",//2
+    "A B,C=A,C-2 B-2",//1
+    "D-2 B-2=D-2,B", //2
+    "A-3 B,A=B,A-2 A-2", //0
+    "A B-2,C=A,C,B B-2", //3
+    "A,B-4 C-2=A,C-4 B,C", //6
+    "A-8 B-2=A,B-3",//18
+    "A-4,B-10 C-2,B=C-3,A,B-4", //8
+    "B,C-2 D-3,A=B-3,A-2 D,C"//8
 ];
-const maxManaFold = 10;
+
+let maxManaFold = 20;
 const prefixManaFold = "mana-fold-";
 
 function prepareAtelier() {
@@ -71,6 +85,7 @@ function determinePrimitiveManaOfTheEssence(extract) {
 
 function resetTotalMana() {
     manaElement.value = 0;
+    manaText.textContent = 0;
 }
 
 function expandAbbreviation(text) {

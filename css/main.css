@@ -11,7 +11,7 @@
   --secondary: rgb(204, 50, 117);
   --border-radius: 1px; /* 20px */
   --border-width: 2px; /* 12px */
-  --border-width-double: calc(var(--border-width)*3);
+  --border-width-double: calc(var(--border-width) * 3);
 }
 @font-face {
   font-family: "Playwrite";
@@ -99,7 +99,7 @@ body {
 }
 
 .stat-title {
-  display:inline-block
+  display: inline-block;
 }
 .stat-value {
   float: right;
@@ -147,6 +147,16 @@ body {
   }
   #workshop {
     overflow: scroll;
+  }
+  .img-goddess {
+    height: 85vh;
+  }
+  .img-goddess img {
+    height: 80vh;
+  }
+  .goddess-result {
+    /* todo temporary */
+    left: 15%;
   }
 }
 

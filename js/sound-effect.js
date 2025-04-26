@@ -5,9 +5,9 @@ const audioSuccess = new Audio("./sound/success.mp3");
 const audioFail = new Audio("./sound/fail.mp3");
 const bgm = new Audio("./sound/dreambig.mp3");
 bgm.loop = true;
-bgm.volume = 0.1;
+bgm.volume = 0.01;
 
-let bgmStarted = !false;
+let bgmStarted = false;
 
 function playSound(audio) {
     audio.currentTime = 0;

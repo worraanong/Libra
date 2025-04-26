@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libra</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/button-input.css">
+    <link rel="stylesheet" href="./css/popup.css">
+</head>
+
+<body onclick="startBgm()">
+    <div class="main">
+        <div class="header-bar">
+            <div class="title"></div>
+            <button id="menu" class="btn-square btn-menu" onclick="pop(menuPopUp)">&#8801;</button>
+            <div class="stats">
+                <div>
+                    <div class="stat-title">Money: </div>
+                    <div class="stat-value">
+                        <span id="money-text">0</span>
+                    </div>
+                    <input id="money" type="number" value="0" disabled style="display: none;">
+                </div>
+                <div>
+                    <div class="stat-title">Experiment No. </div>
+                    <div class="stat-value">
+                        <span id="experiment-text">1</span>
+                    </div>
+                    <input id="experiment" type="number" value="0" disabled style="display: none;">
+                </div>
+                <div>
+                    <div class="stat-title">Total Mana need: </div>
+                    <div class="stat-value">
+                        <span id="mana-text">0</span>
+                    </div>
+                    <input id="mana" type="number" value="0" disabled style="display: none;">
+                </div>
+            </div>
+        </div>
+        <div id="workshop"></div>
+        <div class="footer-bar">
+            <div class="cut-corner">
+                <button id="offer" class="btn-glitter" onclick="makeOfferingToGoddess(this)">Offer</button>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+        <button onclick="toShop()">Shop</button>
+        <button>⚙</button>
+    </div>
+
+    <div id="main-menu" class="layer filter">
+        <div class="popup-content">
+            <button class="btn-square" onclick="hide(menuPopUp)">&times;</button>
+            <h3>Options</h3>
+            <div class="vertical">
+                <button class="btn" onclick="toTitle()">New Game</button>
+                <button class="btn" id="bgm" onclick="toggleBgm()">Background Music</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tutorial" class="layer filter">
+        <div class="popup-content">
+            <button class="btn-square" onclick="hide(tutorialPopUp)">&times;</button>
+            <h3>How to play</h3>
+            <div class="vertical">
+                <div id="hint">
+                    <ul>
+                        <li>Please help balance the elements before they fall into a state of chaos.</li>
+                        <li>The box in front of the elemental compound represents the Mana fold value.</li>
+                        <li>Adjust the Mana fold level so that, after multiply, both sides of the equal sign (=) contain
+                            the same number of elemental orbs.</li>
+                        <li>Then, offer them to Goddess Libra.</li>
+                        <li>Make sure to use the smallest amount of total Mana possible.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="goddess-judgement" class="layer white">
+        <div class="popup-goddess">
+            <div class="popup-image">
+                <div class="img-goddess">
+                    <img src="./image/libra-color.png" alt="Goddess Libra">
+                </div>
+                <div class="goddess-result">
+                    <span id="goddess-result"></span>
+                </div>
+            </div>
+            <div class="button-group">
+                <div id="next" class="cut-corner">
+                    <button class="btn-glitter" onclick="next(this); endConversationWithGoddess()">Next</button>
+                </div>
+                <button id="retry" class="btn btn-secondary" onclick="endConversationWithGoddess()">Retry</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./js/util.js"></script>
+    <script src="./js/orb.js"></script>
+    <script src="./js/navigator.js"></script>
+    <script src="./js/init.js"></script>
+    <script src="./js/html-element.js"></script>
+    <script src="./js/sound-effect.js"></script>
+    <script src="./js/popup.js"></script>
+
+    <script>
+        let materialsCollection = "";
+        let salvers = [];
+
+        //const base2 = "A-3 B,A=B,A-2 A-2"; //0,0,0,0 1/2A+1/2B    2,4,4,0  A+2B   3,0,0,4 3/2A+1/2B 
+        //vice & virtue void this is not libra it vibra!.. vibe with her libraa ration
+        //phse 2 I accidentally multiply x
+        // 3 add void
+
+        pop(tutorialPopUp);
+        startExperiment(0);
+
+        function startExperiment(i) {
+            if (i != 0) {
+                // hintElement.style.display = 'none'; // todo 
+            }
+            materialsCollection = combinations[i].split('=');
+            cleanAtelier();
+            prepareAtelier();
+            attachFunctionToManaFoldInput();
+        }
+
+        function calculateTotalMana() {
+            const inputs = document.querySelectorAll(`[id^=${prefixManaFold}]`);
+            let inputValues = [];
+            inputs.forEach(x => inputValues.push(defaultIfInvalidNumber(x.valueAsNumber, 1, maxManaFold) - 1));
+            const sum = inputValues.reduce((acc, x) => acc + x, 0);
+            updateTotalMana(sum);
+        }
+
+
+        function appraiseByGoddess() {
+
+        }
+
+        function makeOfferingToGoddess(el) {
+            audioMagic.play();
+            nextButton.style.display = 'none';
+            retryButton.style.display = 'none';
+            emptyAllSalvers();
+            breakDownMaterials();
+            const meetGoddess = () => pop(goddessPopUp);
+            delay(meetGoddess, 1);
+            const makeDecision = () => {
+                if (calculateEquilibrium()) {
+                    el.disabled = true;
+                    goddessPleased();
+                }
+                else {
+                    goddessDissatisfied();
+                }
+            }
+
+            delay(makeDecision, 2);
+            // if(experimentElement.value == 8){
+            //     maxManaFold = 20;
+            // }
+        }
+
+        function endConversationWithGoddess() {
+            hide(goddessPopUp);
+            goddessText.textContent = "";
+        }
+
+        function next(el) {
+            if (experimentElement.valueAsNumber >= combinations.length - 1) {
+                thanks();
+            }
+
+            else {
+                nextExperiment();
+                startExperiment(experimentElement.valueAsNumber);
+                offerButton.disabled = false;
+                offerButton.textContent = 'Offer';
+            }
+        }
+
+        function thanks() {
+            cleanAtelier();
+            const divThanks = addDiv(workshopElement, "materials");
+            const divFinalWord = addDiv(workshopElement, "materials");
+            addSpan("Thank you for your help.", divThanks);
+            addSpan("That's all for today.", divFinalWord);
+            offerButton.style.display = 'none';
+        }
+
+        function goddessPleased() {
+            audioSuccess.play();
+            goddessText.textContent = 'Perfect! as it should be';
+            nextButton.style.display = 'block';
+            updateMoney(200);
+        }
+        function goddessDissatisfied() {
+            audioFail.play();
+            goddessText.textContent = 'Hmm? This is not yet balance';
+            retryButton.style.display = 'block';
+            updateMoney(-100);
+
+            // lost money for material that loss
+            // show try again
+            // show try next
+        }
+
+        function updateMoney(value) {
+            moneyElement.value = moneyElement.valueAsNumber + value;
+            moneyText.textContent = moneyElement.value;
+        }
+        function nextExperiment() {
+            experimentElement.value = experimentElement.valueAsNumber + 1;
+            experimentText.textContent = experimentElement.valueAsNumber + 1;
+
+        }
+        function updateTotalMana(value) {
+            manaElement.value = value;
+            manaText.textContent = value;
+        }
+
+        function breakDownMaterials() {
+            for (const [i, materials] of materialsCollection.entries()) {
+                const salver = new Map();
+                const material = materials.split(' ');
+
+                for (const [j, compound] of material.entries()) {
+                    const extracts = compound.split(',');
+                    const level = getInt(`${prefixManaFold}${i}-${j}`);
+
+                    for (let extract of extracts) {
+                        const refinedExtract = determinePrimitiveManaOfTheEssence(extract);
+                        const amplifiedExtract = amplifyManaLevel(refinedExtract, level);
+                        putOnSalver(salver, amplifiedExtract);
+                    }
+                }
+                salvers.push(salver);
+            }
+        }
+
+        function cleanAtelier() {
+            workshopElement.textContent = '';
+        }
+
+        function calculateEquilibrium() {
+            let equal = false;
+            for (let i = 0; i < salvers.length; i++) {
+                const thisSalver = salvers[i];
+                const anotherSalver = salvers[i + 1];
+                if (anotherSalver) {
+                    equal = assessEquivalenceOfEachEssence(thisSalver, anotherSalver)
+                    if (!equal) break;
+                }
+            }
+            return equal;
+        }
+
+        function amplifyManaLevel(extract, level) {
+            [essence, mana] = extract;
+            mana = mana * level;
+            return [essence, mana];
+        }
+
+        function putOnSalver(salver, extract) {
+            [essence, mana] = extract;
+            let before = 0;
+            if (salver.has(essence)) {
+                before = salver.get(essence);
+            }
+            salver.set(essence, before + mana);
+            return salver;
+        }
+
+        function emptyAllSalvers() {
+            salvers = [];
+        }
+
+        function assessEquivalenceOfEachEssence(thisOne, another) {
+            return thisOne.size === another.size &&
+                Array.from(thisOne.keys()).every((essence) => thisOne.get(essence) === another.get(essence));
+        }
+
+        function attachFunctionToManaFoldInput() {
+            const inputs = document.querySelectorAll(`[id^=${prefixManaFold}]`);
+            inputs.forEach(el => el.onchange = function () {
+                playSound(audioDing);
+                addDimEffect(el);
+                calculateTotalMana();
+            });
+            inputs.forEach(el => el.onblur = function () {
+                el.value = defaultIfInvalidNumber(el.valueAsNumber, min = 1, max = maxManaFold);
+                addDimEffect(el);
+            });
+
+            inputs.forEach(el => el.onfocus = function () {
+                el.type = 'text';
+                //not support for input type number
+                el.setSelectionRange(0, el.value.length);
+                el.type = 'number';
+            });
+
+        }
+
+        function addDimEffect(el) {
+            if (el.valueAsNumber === 1) {
+                el.classList.add("dim");
+            }
+            else el.classList.remove("dim");
+        }
+        attachFunctionToManaFoldInput()
+
+    </script>
+</body>
+
+</html>

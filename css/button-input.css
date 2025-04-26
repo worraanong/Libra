@@ -64,6 +64,10 @@ input:focus {
   font-size: 28px;
   color: var(--silver);
 }
+.btn-secondary{
+  padding: 10px 30px;
+  margin: 10px 0;
+}
 .btn:hover {
   box-shadow: 0px 0px 10px var(--silver);
 }
